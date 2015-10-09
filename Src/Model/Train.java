@@ -104,7 +104,6 @@ public class Train extends Observable implements Runnable{
 		this.height = height;
 		this.endOfLine = endOfLine;
 		this.speedX = speed/5;
-		System.out.println("VALOR : " + endOfLine);
 		updateColor();
 	}
 	
