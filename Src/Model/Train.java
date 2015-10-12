@@ -209,7 +209,7 @@ public class Train extends Observable implements Runnable{
 	}
 	
 	public void setSpeed(int speed) {
-		this.speedX = speed;
+		this.speedX = speed/5;
 		notifyObs();
 	}
 }
