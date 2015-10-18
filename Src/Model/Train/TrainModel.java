@@ -1,7 +1,9 @@
-package Model;
+package Model.Train;
 
 import java.util.Observable;
 import java.util.Observer;
+
+import Model.Semaphore.SemaphoreManager;
 
 public class TrainModel extends Observable implements Observer{
 

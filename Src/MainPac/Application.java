@@ -1,5 +1,6 @@
 package MainPac;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,10 +10,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import Controller.InterfaceController;
-import Model.SemaphoreManager;
-import Model.SemaphoreState;
-import Model.TrainManager;
-import Model.TrainModel;
+import Model.Semaphore.Semaphore;
+import Model.Semaphore.SemaphoreManager;
+import Model.Semaphore.SemaphoreState;
+import Model.SemaphoreController.SemaphoreController;
+import Model.Train.TrainManager;
+import Model.Train.TrainModel;
 import View.TrainFrame;
 import View.TrainInterfacePanel;
 import View.TrainPanel;
@@ -40,7 +43,7 @@ public class Application {
 		interfaceFrame.pack();
 		interfaceFrame.setSize(interfaceFrame.getWidth() + 100, interfaceFrame.getHeight());
 		
-		addSemaphores(panel.getTrainModel().getSemaphoreManager());
+		addSemaphores(panel.getTrainModel().getSemaphoreManager(), panel.getTrainModel().getTrainManager());
 		panel.repaint();
 	}
 	
@@ -58,11 +61,13 @@ public class Application {
 		return frame;
 	}
 	
-	private static void addSemaphores(SemaphoreManager semaphoreManager) {
-		semaphoreManager.addSemaphore(SemaphoreState.closed,DEFAULT_SEMAPHORE_LEFT_X,
-				DEFAULT_SEMAPHORE_LEFT_Y);
-		semaphoreManager.addSemaphore(SemaphoreState.open,DEFAULT_SEMAPHORE_RIGHT_X,
-				DEFAULT_SEMAPHORE_RIGHT_Y);
+	private static void addSemaphores(SemaphoreManager semaphoreManager, TrainManager trainManager) {
+		Semaphore leftSem = new Semaphore(SemaphoreState.closed, new Point(DEFAULT_SEMAPHORE_RIGHT_X,DEFAULT_SEMAPHORE_RIGHT_Y));
+		Semaphore rightSem = new Semaphore(SemaphoreState.closed, new Point(DEFAULT_SEMAPHORE_LEFT_X,DEFAULT_SEMAPHORE_LEFT_Y));
+		semaphoreManager.addSemaphore(leftSem);
+		semaphoreManager.addSemaphore(rightSem);
+		SemaphoreController controller = new SemaphoreController(leftSem,rightSem);
+		trainManager.addObserver(controller);
 	}
 	
 	public static BufferedImage loadImage(File file) {

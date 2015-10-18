@@ -4,9 +4,9 @@ import java.awt.Point;
 
 import javax.swing.JPanel;
 
-import Model.Train;
-import Model.TrainDirection;
-import Model.TrainModel;
+import Model.Train.Train;
+import Model.Train.TrainDirection;
+import Model.Train.TrainModel;
 
 public class InterfaceController {
 	private TrainModel model;

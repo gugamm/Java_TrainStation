@@ -1,4 +1,4 @@
-package Model;
+package Model.Semaphore;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -54,6 +54,12 @@ public class Semaphore extends Observable{
 		updateColor();
 		notifyObs();
 		return state;
+	}
+	
+	public void setState(SemaphoreState state) {
+		this.state = state;
+		updateColor();
+		notifyObs();
 	}
 	
 	public SemaphoreState getState() {

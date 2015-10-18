@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 import Controller.InterfaceController;
-import Model.TrainDirection;
+import Model.Train.TrainDirection;
 
 @SuppressWarnings("serial")
 public class TrainInterfacePanel extends JPanel{

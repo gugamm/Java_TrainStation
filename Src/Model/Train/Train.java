@@ -1,4 +1,4 @@
-package Model;
+package Model.Train;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -161,7 +161,7 @@ public class Train extends Observable implements Runnable{
 			break;
 		}
 		while (!hasReachEndOfLine()) {
-			if (status == TrainStatus.stationary) {
+			if (status != TrainStatus.inmotion) {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {

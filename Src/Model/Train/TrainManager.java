@@ -1,4 +1,4 @@
-package Model;
+package Model.Train;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -18,15 +18,18 @@ public class TrainManager extends Observable implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
+		Train train = (Train)o;
 		if (arg != null) {
 			String text = (String)arg;
 			if (text == "Finished") {
-				removeTrain((Train)o);
+				removeTrain(train);
+				return;
 			}
 		}
-		updateTrainStatus((Train)o);
+		
+		updateTrainStatus(train);
 		setChanged();
-		notifyObservers(o); //Notify passing the train that has changed
+		notifyObservers(new TrainInformation(train,false,false)); //Notify passing the train that has changed
 	}
 	
 	private Train getFrontTrain(Train t) {
@@ -54,7 +57,8 @@ public class TrainManager extends Observable implements Observer{
 	private void updateTrainStatus(Train t) {
 		Train front = getFrontTrain(t);
 		if (front == null) {
-			t.setStatus(TrainStatus.inmotion);
+			if (t.getStatus() != TrainStatus.waitingSemaphore)
+				t.setStatus(TrainStatus.inmotion);
 		} else {
 			if (isDistanceSafe(front,t)) {
 				t.setStatus(TrainStatus.inmotion);
@@ -63,11 +67,17 @@ public class TrainManager extends Observable implements Observer{
 			}
 		}
 	}
+	
+	private void notifyObs(TrainInformation information) {
+		setChanged();
+		notifyObservers(information);
+	}
 
 	public Train addTrain(TrainDirection direction, int endOfLine, int speed, int width, int height, Point position) {
 		Train train = new Train(direction,endOfLine,speed,width,height,position);
 		train.addObserver(this);
 		trains.add(train);
+		notifyObs(new TrainInformation(train,true,false));
 		return train;
 	}
 	
@@ -79,6 +89,7 @@ public class TrainManager extends Observable implements Observer{
 		Train train = new Train(direction,endOfLine,speed,position);
 		train.addObserver(this);
 		trains.add(train);
+		notifyObs(new TrainInformation(train,true,false));
 		return train;
 	}
 	
@@ -89,6 +100,7 @@ public class TrainManager extends Observable implements Observer{
 	public void addTrain(Train train) {
 		train.addObserver(this);
 		trains.add(train);
+		notifyObs(new TrainInformation(train,true,false));
 	}
 	
 	public boolean removeTrain(Train t) {
@@ -96,6 +108,7 @@ public class TrainManager extends Observable implements Observer{
 		if (removed) {
 			t.deleteObserver(this);
 		}
+		notifyObs(new TrainInformation(t,false,true));
 		return removed;
 	}
 	
@@ -103,6 +116,7 @@ public class TrainManager extends Observable implements Observer{
 		Train train = trains.remove(index);
 		if (train != null) {
 			train.deleteObserver(this);
+			notifyObs(new TrainInformation(train,false,true));
 		}
 		return (train != null);
 	}

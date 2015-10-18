@@ -1,4 +1,4 @@
-package Model;
+package Model.Semaphore;
 
 import java.awt.Point;
 import java.util.ArrayList;

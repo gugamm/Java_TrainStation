@@ -3,6 +3,8 @@ package View;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Observable;
@@ -12,11 +14,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import Model.Semaphore;
-import Model.SemaphoreManager;
-import Model.Train;
-import Model.TrainManager;
-import Model.TrainModel;
+import Model.Semaphore.Semaphore;
+import Model.Semaphore.SemaphoreManager;
+import Model.Train.Train;
+import Model.Train.TrainManager;
+import Model.Train.TrainModel;
 
 @SuppressWarnings("serial")
 public class TrainPanel extends JPanel implements Observer{
@@ -101,6 +103,14 @@ public class TrainPanel extends JPanel implements Observer{
 		this.image = loadImage();
 		this.trainModel = trainModel;
 		trainModel.addObserver(this);
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.printf("X : %d\n",e.getX());
+				super.mouseClicked(e);
+			}
+		});
 	}
 	
 	@Override
