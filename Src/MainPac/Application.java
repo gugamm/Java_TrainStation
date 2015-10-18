@@ -8,45 +8,54 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import Controller.InterfaceController;
 import Model.SemaphoreManager;
 import Model.SemaphoreState;
-import Model.Train;
-import Model.TrainDirection;
 import Model.TrainManager;
 import Model.TrainModel;
 import View.TrainFrame;
+import View.TrainInterfacePanel;
 import View.TrainPanel;
 
 public class Application {
-	private static final int DEFAULT_RIGHT_X = 19;
-	private static final int DEFAULT_RIGHT_Y = 247;
-	private static final int DEFAULT_LEFT_X = 763;
-	private static final int DEFAULT_LEFT_Y = 338;
-	
 	private static final int DEFAULT_SEMAPHORE_LEFT_X = 200;
 	private static final int DEFAULT_SEMAPHORE_LEFT_Y = 180;
 	private static final int DEFAULT_SEMAPHORE_RIGHT_X = 582;
 	private static final int DEFAULT_SEMAPHORE_RIGHT_Y = 180;
 	
+	
+	static public TrainFrame frm;
+	static public JFrame interfaceFrame;
+	
 	public static void main(String[] args) {
-		TrainFrame frm = createFrame("Train Manager Application");
-		TrainPanel panel = createPanel();
+		TrainModel model = new TrainModel(new TrainManager(), new SemaphoreManager());
+		frm = createFrame("Train Manager Application");
+		TrainPanel panel = createTrainPanel(model);
 		frm.add(panel);
 		frm.setVisible(true);
+		InterfaceController controller = new InterfaceController(model,panel.getWidth());
+		interfaceFrame = createInterfaceFrame(controller);
 		
-		addTrains(panel.getTrainModel().getTrainManager(),panel);
+		interfaceFrame.setVisible(true);
+		interfaceFrame.pack();
+		interfaceFrame.setSize(interfaceFrame.getWidth() + 100, interfaceFrame.getHeight());
+		
 		addSemaphores(panel.getTrainModel().getSemaphoreManager());
-		
-		Train tremTeste1 = panel.getTrainModel().getTrainManager().getTrain(0);
-		Train tremTeste2 = panel.getTrainModel().getTrainManager().getTrain(1);
-		new Thread(tremTeste1).start();
-		new Thread(tremTeste2).start(); 
+		panel.repaint();
 	}
 	
-	private static TrainPanel createPanel() {
-		TrainModel model = new TrainModel(new TrainManager(), new SemaphoreManager());
+	private static TrainPanel createTrainPanel(TrainModel model) {
 		TrainPanel panel = new TrainPanel(model);
 		return panel;
+	}
+	
+	private static JFrame createInterfaceFrame(InterfaceController controller) {
+		JFrame frame = new JFrame("Train Interface");
+		TrainInterfacePanel panel = new TrainInterfacePanel(controller);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocation(frm.getX(), frm.getY());
+		frame.add(panel);
+		return frame;
 	}
 	
 	private static void addSemaphores(SemaphoreManager semaphoreManager) {
@@ -54,11 +63,6 @@ public class Application {
 				DEFAULT_SEMAPHORE_LEFT_Y);
 		semaphoreManager.addSemaphore(SemaphoreState.open,DEFAULT_SEMAPHORE_RIGHT_X,
 				DEFAULT_SEMAPHORE_RIGHT_Y);
-	}
-	
-	private static void addTrains(TrainManager trainManager, TrainPanel panel) {
-		trainManager.addTrain(TrainDirection.right,panel.getWidth(),60,DEFAULT_RIGHT_X,DEFAULT_RIGHT_Y);
-		trainManager.addTrain(TrainDirection.left,0,60,DEFAULT_LEFT_X,DEFAULT_LEFT_Y);
 	}
 	
 	public static BufferedImage loadImage(File file) {

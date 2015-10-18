@@ -12,6 +12,7 @@ public class Train extends Observable implements Runnable{
 	/**********************PRIVATE VARIABLE DECLARATION**********************/
 	private Point position;
 	private TrainDirection direction;
+	private TrainStatus status;
 	private int width;
 	private int height;
 	private int speedX;
@@ -104,6 +105,7 @@ public class Train extends Observable implements Runnable{
 		this.height = height;
 		this.endOfLine = endOfLine;
 		this.speedX = speed/5;
+		this.status = TrainStatus.stationary;
 		updateColor();
 	}
 	
@@ -126,6 +128,24 @@ public class Train extends Observable implements Runnable{
 		return distanceY/timeX;
 	}
 	
+	public void changeStatus() {
+		switch(status) {
+		case stationary : status = TrainStatus.inmotion;
+			break;
+		case inmotion : status = TrainStatus.stationary;
+			break;
+		default : status = TrainStatus.stationary;
+		}
+	}
+	
+	public void setStatus(TrainStatus status) {
+		this.status = status;
+	}
+	
+	public TrainStatus getStatus() {
+		return status;
+	}
+	
 	@Override
 	public void run() {
 		int speedVert = 0;
@@ -141,6 +161,16 @@ public class Train extends Observable implements Runnable{
 			break;
 		}
 		while (!hasReachEndOfLine()) {
+			if (status == TrainStatus.stationary) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				setChanged();
+				notifyObservers();
+				continue;
+			}
 			sbs = getSpeedYByStep(step,speedVert);
 			if (speedVert != sbs) {
 				step++;

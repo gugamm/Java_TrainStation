@@ -9,6 +9,7 @@ import java.util.Observer;
 public class TrainManager extends Observable implements Observer{  
 	/**********************PRIVATE VARIABLE DECLARATION**********************/
 	private List<Train> trains;
+	private static final double SAFE_DISTANCE = 30.0;
 	
 	/**********************PUBLIC METHODS DECLARATION**********************/
 	public TrainManager () {
@@ -23,8 +24,44 @@ public class TrainManager extends Observable implements Observer{
 				removeTrain((Train)o);
 			}
 		}
+		updateTrainStatus((Train)o);
 		setChanged();
 		notifyObservers(o); //Notify passing the train that has changed
+	}
+	
+	private Train getFrontTrain(Train t) {
+		Train front;
+		int index = getTrainIndex(t);
+		if (index < 0)
+			return null;
+		
+		for (int i = index - 1; i >= 0; i--) {
+			front = getTrain(i);
+			if (front.getDirection() == t.getDirection())
+				return front;
+		}
+		return null;
+	}
+	
+	private boolean isDistanceSafe(Train front, Train back) {
+		double distance;
+		int disX = front.getPosition().x - back.getPosition().x;
+		int disY = front.getPosition().y - back.getPosition().y;
+		distance = Math.sqrt(disX * disX + disY * disY);
+		return (distance > SAFE_DISTANCE);
+	}
+	
+	private void updateTrainStatus(Train t) {
+		Train front = getFrontTrain(t);
+		if (front == null) {
+			t.setStatus(TrainStatus.inmotion);
+		} else {
+			if (isDistanceSafe(front,t)) {
+				t.setStatus(TrainStatus.inmotion);
+			} else {
+				t.setStatus(TrainStatus.stationary);
+			}
+		}
 	}
 
 	public Train addTrain(TrainDirection direction, int endOfLine, int speed, int width, int height, Point position) {
