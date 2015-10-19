@@ -3,8 +3,6 @@ package View;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Observable;
@@ -52,7 +50,7 @@ public class TrainPanel extends JPanel implements Observer{
 				semaphore.getWidth(), semaphore.getHeight());
 		g.setColor(semaphore.getColor());
 		g.fillOval(position.x - semaphore.getWidth()/2, position.y - semaphore.getHeight()/2, 
-				semaphore.getWidth(), semaphore.getHeight());
+				semaphore.getWidth() - 1, semaphore.getHeight() - 1);
 		g.setColor(defaultColor);
 	}
 	
@@ -103,14 +101,6 @@ public class TrainPanel extends JPanel implements Observer{
 		this.image = loadImage();
 		this.trainModel = trainModel;
 		trainModel.addObserver(this);
-		
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.printf("X : %d\n",e.getX());
-				super.mouseClicked(e);
-			}
-		});
 	}
 	
 	@Override
