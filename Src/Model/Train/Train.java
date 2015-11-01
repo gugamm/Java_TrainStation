@@ -48,15 +48,15 @@ public class Train extends Observable implements Runnable{
 	private int getSpeedYByStepLeft(int step, int speedY) {
 		int speedVert = speedY;
 		if (step == 0) {
-			if (position.x <= 684) {
-				speedVert = calculateSpeedY(position.x, position.y, 578, 282);
+			if (position.x <= 688) {
+				speedVert = calculateSpeedY(position.x, position.y, 580, 280);
 			}
 		} else if (step == 1) {
-			if (position.y <= 282) {
+			if (position.y <= 285) {
 				speedVert = 0;
 			}
 		} else if (step == 2) {
-			if (position.y <= 282 && position.x <= 235)  {
+			if (position.y <= 285 && position.x <= 235)  {
 				speedVert = -calculateSpeedY(position.x, position.y, 100, 339);
 			}
 		} else if (step == 3) {

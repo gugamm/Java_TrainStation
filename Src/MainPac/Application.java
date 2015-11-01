@@ -44,6 +44,7 @@ public class Application {
 		interfaceFrame.setSize(interfaceFrame.getWidth() + 100, interfaceFrame.getHeight());
 		
 		addSemaphores(panel.getTrainModel().getSemaphoreManager(), panel.getTrainModel().getTrainManager());
+
 		panel.repaint();
 	}
 	

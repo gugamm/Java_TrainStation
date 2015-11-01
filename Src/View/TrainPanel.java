@@ -3,6 +3,8 @@ package View;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Observable;
@@ -101,6 +103,14 @@ public class TrainPanel extends JPanel implements Observer{
 		this.image = loadImage();
 		this.trainModel = trainModel;
 		trainModel.addObserver(this);
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.printf("X : %d -- Y : %d\n", e.getX(), e.getY());
+				super.mouseClicked(e);
+			}
+		});
 	}
 	
 	@Override

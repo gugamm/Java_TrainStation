@@ -29,7 +29,7 @@ public class TrainManager extends Observable implements Observer{
 		
 		updateTrainStatus(train);
 		setChanged();
-		notifyObservers(new TrainInformation(train,false,false)); //Notify passing the train that has changed
+		notifyObservers(new TrainInformation(train,false)); //Notify passing the train that has changed
 	}
 	
 	private Train getFrontTrain(Train t) {
@@ -77,7 +77,7 @@ public class TrainManager extends Observable implements Observer{
 		Train train = new Train(direction,endOfLine,speed,width,height,position);
 		train.addObserver(this);
 		trains.add(train);
-		notifyObs(new TrainInformation(train,true,false));
+		notifyObs(new TrainInformation(train,true));
 		return train;
 	}
 	
@@ -89,7 +89,7 @@ public class TrainManager extends Observable implements Observer{
 		Train train = new Train(direction,endOfLine,speed,position);
 		train.addObserver(this);
 		trains.add(train);
-		notifyObs(new TrainInformation(train,true,false));
+		notifyObs(new TrainInformation(train,true));
 		return train;
 	}
 	
@@ -100,7 +100,7 @@ public class TrainManager extends Observable implements Observer{
 	public void addTrain(Train train) {
 		train.addObserver(this);
 		trains.add(train);
-		notifyObs(new TrainInformation(train,true,false));
+		notifyObs(new TrainInformation(train,true));
 	}
 	
 	public boolean removeTrain(Train t) {
@@ -108,7 +108,7 @@ public class TrainManager extends Observable implements Observer{
 		if (removed) {
 			t.deleteObserver(this);
 		}
-		notifyObs(new TrainInformation(t,false,true));
+		notifyObs(new TrainInformation(t,false));
 		return removed;
 	}
 	
@@ -116,7 +116,7 @@ public class TrainManager extends Observable implements Observer{
 		Train train = trains.remove(index);
 		if (train != null) {
 			train.deleteObserver(this);
-			notifyObs(new TrainInformation(train,false,true));
+			notifyObs(new TrainInformation(train,false));
 		}
 		return (train != null);
 	}

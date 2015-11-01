@@ -1,5 +1,6 @@
 package Model.SemaphoreController;
 
+import java.awt.Point;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -7,6 +8,7 @@ import Model.Semaphore.Semaphore;
 import Model.Train.Train;
 import Model.Train.TrainDirection;
 import Model.Train.TrainInformation;
+import Model.Train.TrainStatus;
 
 //Control the state of the semaphores
 public class SemaphoreController implements Observer{
@@ -108,11 +110,25 @@ public class SemaphoreController implements Observer{
 		
 		if (information.getCreated())
 			createTrain(information);
-		
-		if (information.getDestroyed())
+		else if (isDestroyable(information))
 			destroyTrain(information);
+		else
+			moveTrain(information);
+	}
+	
+	private boolean isDestroyable(TrainInformation tInformation) {
+		Train train = tInformation.getTrain();
+		TrainDirection direction = train.getDirection();
+		Point position = train.getPosition();
 		
-		moveTrain(information);
+		if (train.getStatus() == TrainStatus.stationary)
+			return false;
+		switch (direction) {
+		case right : return (position.x > 615 && position.x < 621);
+		case left  : return (position.x < 200 && position.x > 192);
+		}
+		
+		return false;
 	}
 		
 }
