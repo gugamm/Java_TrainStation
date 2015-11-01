@@ -10,12 +10,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import Controller.InterfaceController;
+import Model.Railroad.TrainModel;
 import Model.Semaphore.Semaphore;
 import Model.Semaphore.SemaphoreManager;
 import Model.Semaphore.SemaphoreState;
 import Model.SemaphoreController.SemaphoreController;
 import Model.Train.TrainManager;
-import Model.Train.TrainModel;
 import View.TrainFrame;
 import View.TrainInterfacePanel;
 import View.TrainPanel;

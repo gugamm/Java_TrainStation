@@ -3,26 +3,26 @@ package View;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
+import Model.Railroad.TrainModel;
 import Model.Semaphore.Semaphore;
 import Model.Semaphore.SemaphoreManager;
 import Model.Train.Train;
 import Model.Train.TrainManager;
-import Model.Train.TrainModel;
 
 @SuppressWarnings("serial")
-public class TrainPanel extends JPanel implements Observer{
+public class TrainPanel extends JPanel{
 	/**********************PRIVATE VARIABLE DECLARATION**********************/
+	private static final int TIMER = 200;
 	private BufferedImage image;
 	private TrainModel trainModel;
 	
@@ -102,28 +102,21 @@ public class TrainPanel extends JPanel implements Observer{
 		super();
 		this.image = loadImage();
 		this.trainModel = trainModel;
-		trainModel.addObserver(this);
-		
-		addMouseListener(new MouseAdapter() {
+		Timer timer = new Timer(TIMER,new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.printf("X : %d -- Y : %d\n", e.getX(), e.getY());
-				super.mouseClicked(e);
+			public void actionPerformed(ActionEvent e) {
+				TrainPanel.this.repaint();
 			}
 		});
+		timer.setRepeats(true);
+		timer.start();
 	}
 	
-	@Override
-	public void update(Observable o, Object arg) {
-		repaint();
-	}
-
 	public TrainModel getTrainModel() {
 		return trainModel;
 	}
 	
 	public void setTrainModel (TrainModel model) {
-		this.trainModel.deleteObserver(this);
 		this.trainModel = model;
 	}
 	
