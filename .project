@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>SequenceDiagram.asta</name>
+			<type>1</type>
+			<location>C:/Users/guga/Java Workspace/Mars/TrainStation/SequenceDiagram.asta</location>
+		</link>
+	</linkedResources>
 </projectDescription>
