@@ -129,6 +129,4 @@ public class TrainInterfacePanel extends JPanel{
 		});
 	}
 	
-	
-	
 }
